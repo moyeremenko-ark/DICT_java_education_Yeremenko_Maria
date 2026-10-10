@@ -12,6 +12,14 @@ public class ChatBot {
         System.out.println("Hello! My name is " + botName +".");
         System.out.println("I was created in " + birthYear + ".");
 
+        // 2-nd stage
+        System.out.println("Please, remind me your name.");
+
+        String name = scanner.nextLine();
+
+        System.out.println("What a great name you have, " + name + "!");
+
+
 
         scanner.close();
     }
