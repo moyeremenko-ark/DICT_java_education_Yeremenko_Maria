@@ -11,8 +11,11 @@ public class hangman {
         String[] words = {"python", "java", "javascript", "kotlin"};
         String secretWord = words[random.nextInt(words.length)];
 
+        // Формуємо підказку: перші 2 літери + дефіси замість решти
+        String hint = secretWord.substring(0, 2) + "-".repeat(secretWord.length() - 2);
+
         System.out.println("HANGMAN");
-        System.out.print("Guess the word: ");
+        System.out.print("Guess the word " + hint + ": ");
 
         String input = scanner.nextLine();
 
