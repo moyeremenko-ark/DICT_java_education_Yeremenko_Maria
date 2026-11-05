@@ -9,15 +9,28 @@ public class hangman {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
-
         String[] words = {"python", "java", "javascript", "kotlin"};
-        String secretWord = words[random.nextInt(words.length)];
 
+        System.out.println("HANGMAN");
+
+        while (true) {
+            System.out.print("Type \"play\" to play the game, \"exit\" to quit: ");
+            String action = scanner.nextLine();
+
+            if ("play".equals(action)) {
+                playGame(scanner, random, words);
+                System.out.println();
+            } else if ("exit".equals(action)) {
+                break;
+            }
+        }
+    }
+
+    private static void playGame(Scanner scanner, Random random, String[] words) {
+        String secretWord = words[random.nextInt(words.length)];
         char[] maskedWord = "-".repeat(secretWord.length()).toCharArray();
         Set<Character> guessedLetters = new HashSet<>();
         int lives = 8;
-
-        System.out.println("HANGMAN");
 
         while (lives > 0) {
             System.out.println();
@@ -60,7 +73,7 @@ public class hangman {
                 System.out.println();
                 System.out.println("You guessed the word " + secretWord + "!");
                 System.out.println("You survived!");
-                break;
+                return;
             }
         }
 
