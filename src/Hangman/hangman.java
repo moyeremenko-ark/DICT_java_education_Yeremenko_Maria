@@ -11,18 +11,34 @@ public class hangman {
         String[] words = {"python", "java", "javascript", "kotlin"};
         String secretWord = words[random.nextInt(words.length)];
 
-        // Формуємо підказку: перші 2 літери + дефіси замість решти
-        String hint = secretWord.substring(0, 2) + "-".repeat(secretWord.length() - 2);
+        char[] maskedWord = "-".repeat(secretWord.length()).toCharArray();
 
         System.out.println("HANGMAN");
-        System.out.print("Guess the word " + hint + ": ");
 
-        String input = scanner.nextLine();
+        for (int i = 0; i < 8; i++) {
+            System.out.println();
+            System.out.println(String.valueOf(maskedWord));
+            System.out.print("Input a letter: ");
 
-        if (secretWord.equals(input)) {
-            System.out.println("You survived!");
-        } else {
-            System.out.println("You lost!");
+            String input = scanner.nextLine();
+
+            if (!input.isEmpty()) {
+                char letter = input.charAt(0);
+
+                if (secretWord.indexOf(letter) != -1) {
+                    for (int j = 0; j < secretWord.length(); j++) {
+                        if (secretWord.charAt(j) == letter) {
+                            maskedWord[j] = letter;
+                        }
+                    }
+                } else {
+                    System.out.println("That letter doesn't appear in the word");
+                }
+            }
         }
+
+        System.out.println();
+        System.out.println("Thanks for playing!");
+        System.out.println("We'll see how well you did in the next stage");
     }
 }
