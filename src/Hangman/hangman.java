@@ -1,7 +1,9 @@
 package Hangman;
 
+import java.util.HashSet;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Set;
 
 public class hangman {
     public static void main(String[] args) {
@@ -12,6 +14,7 @@ public class hangman {
         String secretWord = words[random.nextInt(words.length)];
 
         char[] maskedWord = "-".repeat(secretWord.length()).toCharArray();
+        Set<Character> guessedLetters = new HashSet<>();
         int lives = 8;
 
         System.out.println("HANGMAN");
@@ -22,29 +25,30 @@ public class hangman {
             System.out.print("Input a letter: ");
 
             String input = scanner.nextLine();
-            if (input.isEmpty()) {
+
+            if (input.length() != 1) {
+                System.out.println("You should input a single letter");
                 continue;
             }
 
             char letter = input.charAt(0);
 
-            if (secretWord.indexOf(letter) != -1) {
-                boolean alreadyGuessed = false;
-                for (char c : maskedWord) {
-                    if (c == letter) {
-                        alreadyGuessed = true;
-                        break;
-                    }
-                }
+            if (letter < 'a' || letter > 'z') {
+                System.out.println("Please enter a lowercase English letter");
+                continue;
+            }
 
-                if (alreadyGuessed) {
-                    System.out.println("No improvements");
-                    lives--;
-                } else {
-                    for (int i = 0; i < secretWord.length(); i++) {
-                        if (secretWord.charAt(i) == letter) {
-                            maskedWord[i] = letter;
-                        }
+            if (guessedLetters.contains(letter)) {
+                System.out.println("You've already guessed this letter");
+                continue;
+            }
+
+            guessedLetters.add(letter);
+
+            if (secretWord.indexOf(letter) != -1) {
+                for (int i = 0; i < secretWord.length(); i++) {
+                    if (secretWord.charAt(i) == letter) {
+                        maskedWord[i] = letter;
                     }
                 }
             } else {
@@ -54,14 +58,13 @@ public class hangman {
 
             if (String.valueOf(maskedWord).equals(secretWord)) {
                 System.out.println();
-                System.out.println(String.valueOf(maskedWord));
-                System.out.println("You guessed the word!");
+                System.out.println("You guessed the word " + secretWord + "!");
                 System.out.println("You survived!");
                 break;
             }
         }
 
-        if (lives == 0 && !String.valueOf(maskedWord).equals(secretWord)) {
+        if (lives == 0) {
             System.out.println("You lost!");
         }
     }
