@@ -129,26 +129,112 @@
 
 // 4th stage
 
+//package TicTacToe;
+//
+//import java.util.Scanner;
+//
+//public class TicTacToe {
+//    public static void main(String[] args) {
+//        Scanner scanner = new Scanner(System.in);
+//
+//        System.out.print("Enter cells: ");
+//        String input = scanner.nextLine();
+//
+//        char[][] board = new char[3][3];
+//        for (int i = 0; i < 9; i++) {
+//            char ch = input.charAt(i);
+//            board[i / 3][i % 3] = (ch == '_') ? ' ' : ch;
+//        }
+//
+//        printBoard(board);
+//        makeMove(scanner, board);
+//        printBoard(board);
+//    }
+//
+//    static void printBoard(char[][] board) {
+//        System.out.println("---------");
+//        for (int row = 0; row < 3; row++) {
+//            System.out.println("| " + board[row][0] + " " + board[row][1] + " " + board[row][2] + " |");
+//        }
+//        System.out.println("---------");
+//    }
+//
+//    static void makeMove(Scanner scanner, char[][] board) {
+//        while (true) {
+//            System.out.print("Enter the coordinates: ");
+//            String line = scanner.nextLine().trim();
+//            String[] parts = line.split("\\s+");
+//
+//            if (parts.length != 2) {
+//                System.out.println("You should enter numbers!");
+//                continue;
+//            }
+//
+//            int row;
+//            int col;
+//            try {
+//                row = Integer.parseInt(parts[0]);
+//                col = Integer.parseInt(parts[1]);
+//            } catch (NumberFormatException e) {
+//                System.out.println("You should enter numbers!");
+//                continue;
+//            }
+//
+//            if (row < 1 || row > 3 || col < 1 || col > 3) {
+//                System.out.println("Coordinates should be from 1 to 3!");
+//                continue;
+//            }
+//
+//            if (board[row - 1][col - 1] != ' ') {
+//                System.out.println("This cell is occupied! Choose another one!");
+//                continue;
+//            }
+//
+//            board[row - 1][col - 1] = 'X';
+//            break;
+//        }
+//    }
+//}
+
+
+
+// 5th stage
+
 package TicTacToe;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class TicTacToe {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Enter cells: ");
-        String input = scanner.nextLine();
-
         char[][] board = new char[3][3];
-        for (int i = 0; i < 9; i++) {
-            char ch = input.charAt(i);
-            board[i / 3][i % 3] = (ch == '_') ? ' ' : ch;
+        for (char[] row : board) {
+            Arrays.fill(row, ' ');
         }
 
+        char currentPlayer = 'X';
+        int moves = 0;
+
         printBoard(board);
-        makeMove(scanner, board);
-        printBoard(board);
+
+        while (true) {
+            makeMove(scanner, board, currentPlayer);
+            moves++;
+            printBoard(board);
+
+            if (hasWon(board, currentPlayer)) {
+                System.out.println(currentPlayer + " wins");
+                break;
+            }
+            if (moves == 9) {
+                System.out.println("Draw");
+                break;
+            }
+
+            currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+        }
     }
 
     static void printBoard(char[][] board) {
@@ -159,7 +245,7 @@ public class TicTacToe {
         System.out.println("---------");
     }
 
-    static void makeMove(Scanner scanner, char[][] board) {
+    static void makeMove(Scanner scanner, char[][] board, char player) {
         while (true) {
             System.out.print("Enter the coordinates: ");
             String line = scanner.nextLine().trim();
@@ -190,8 +276,26 @@ public class TicTacToe {
                 continue;
             }
 
-            board[row - 1][col - 1] = 'X';
+            board[row - 1][col - 1] = player;
             break;
         }
+    }
+
+    static boolean hasWon(char[][] board, char player) {
+        for (int i = 0; i < 3; i++) {
+            if (board[i][0] == player && board[i][1] == player && board[i][2] == player) {
+                return true;
+            }
+            if (board[0][i] == player && board[1][i] == player && board[2][i] == player) {
+                return true;
+            }
+        }
+        if (board[0][0] == player && board[1][1] == player && board[2][2] == player) {
+            return true;
+        }
+        if (board[0][2] == player && board[1][1] == player && board[2][0] == player) {
+            return true;
+        }
+        return false;
     }
 }
